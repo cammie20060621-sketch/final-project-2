@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ocean Protection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font Awesome (icon) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #0a2540, #1e90ff);
+      color: white;
+    }
+
+    /* ================= NAVBAR ================= */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+
+    nav h1 {
+      font-size: 20px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+    }
+
+    nav ul li {
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav ul li:hover {
+      color: #00eaff;
+    }
+
+    /* ================= HERO ================= */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .hero button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      background: #00eaff;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      transform: scale(1.1);
+      background: #00c3cc;
+    }
+
+    /* ================= ICON SECTION ================= */
+    .icons {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      padding: 60px 20px;
+      flex-wrap: wrap;
+    }
+
+    .icon-box {
+      text-align: center;
+    }
+
+    .icon-box i {
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: #00eaff;
+    }
+
+    /* ================= COUNTER ================= */
+    .counters {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      padding: 60px 20px;
+      flex-wrap: wrap;
+    }
+
+    .counter-box {
+      text-align: center;
+    }
+
+    .counter {
+      font-size: 40px;
+      font-weight: bold;
+      color: #00eaff;
+    }
+
+    /* ================= CARDS ================= */
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 60px 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 25px;
+      border-radius: 15px;
+      width: 250px;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      background: rgba(255,255,255,0.2);
+    }
+
+    .card button {
+      margin-top: 15px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 15px;
+      background: #00eaff;
+      cursor: pointer;
+    }
+
+    /* ================= AWARENESS ================= */
+    .messages {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .messages p {
+      margin: 10px 0;
+      font-size: 18px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.6s;
+    }
+
+    .messages p.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <h1>Ocean Project</h1>
+    <ul>
+      <li>Home</li>
+      <li>About</li>
+      <li>Game</li>
+      <li>Quiz</li>
+      <li>About Us</li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>From Consumption to Ocean Protection</h1>
+    <p>Every choice you make impacts our ocean</p>
+    <button onclick="scrollToContent()">Find Out More</button>
+  </section>
+
+  <!-- ICON -->
+  <section class="icons">
+    <div class="icon-box">
+      <i class="fas fa-bottle-water"></i>
+      <p>Plastic Waste</p>
+    </div>
+    <div class="icon-box">
+      <i class="fas fa-cart-shopping"></i>
+      <p>Overconsumption</p>
+    </div>
+    <div class="icon-box">
+      <i class="fas fa-fish"></i>
+      <p>Marine Life</p>
+    </div>
+    <div class="icon-box">
+      <i class="fas fa-recycle"></i>
+      <p>Recycling</p>
+    </div>
+  </section>
+
+  <!-- COUNTERS -->
+  <section class="counters">
+    <div class="counter-box">
+      <div class="counter" data-target="8">0</div>
+      <p>Million Tons Plastic / Year</p>
+    </div>
+    <div class="counter-box">
+      <div class="counter" data-target="70">0</div>
+      <p>% Pollution from Land</p>
+    </div>
+    <div class="counter-box">
+      <div class="counter" data-target="90">0</div>
+      <p>% Marine Life Affected</p>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="cards">
+    <div class="card">
+      <h3>Game</h3>
+      <p>Learn through interaction</p>
+      <button>Learn More</button>
+    </div>
+
+    <div class="card">
+      <h3>Quiz</h3>
+      <p>Test your knowledge</p>
+      <button>Learn More</button>
+    </div>
+  </section>
+
+  <!-- MESSAGES -->
+  <section class="messages">
+    <p>Reduce plastic, save marine life</p>
+    <p>Your daily choices matter</p>
+    <p>Protect oceans, protect future</p>
+  </section>
+
+  <script>
+    // scroll
+    function scrollToContent() {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: "smooth"
+      });
+    }
+
+    // counter animation
+    const counters = document.querySelectorAll('.counter');
+
+    counters.forEach(counter => {
+      const update = () => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const increment = target / 100;
+
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(update, 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      update();
+    });
+
+    // fade-in messages
+    const msgs = document.querySelectorAll('.messages p');
+
+    window.addEventListener('scroll', () => {
+      msgs.forEach(msg => {
+        const position = msg.getBoundingClientRect().top;
+        if (position < window.innerHeight - 50) {
+          msg.classList.add('show');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
