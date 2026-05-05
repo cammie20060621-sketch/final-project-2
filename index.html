@@ -2,25 +2,59 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ocean</title>
+<title>Ocean Protection</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-body {
+* {
   margin: 0;
-  font-family: Arial;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
   background: linear-gradient(to bottom, #0a2540, #1e90ff);
   color: white;
   overflow-x: hidden;
 }
 
-/* 🌊 SVG WAVE（穩定版） */
+/* NAVBAR */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+/* HERO */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+/* 🌊 WAVE */
 .wave {
   position: absolute;
   bottom: 0;
   width: 100%;
+  overflow: hidden;
 }
 
 .wave svg {
@@ -39,10 +73,16 @@ body {
   gap: 100px;
   padding: 120px 20px;
   text-align: center;
+  flex-wrap: wrap;
 }
 
+.stat-box {
+  position: relative;
+}
+
+/* ICON FLOAT */
 .stat-box i {
-  font-size: 40px;
+  font-size: 42px;
   color: #00eaff;
   margin-bottom: 10px;
   animation: float 3s ease-in-out infinite;
@@ -53,6 +93,7 @@ body {
   50% { transform: translateY(-10px); }
 }
 
+/* NUMBER */
 .counter {
   display: flex;
   justify-content: center;
@@ -60,6 +101,7 @@ body {
   font-weight: 300;
 }
 
+/* DIGIT ANIMATION */
 .digit {
   opacity: 0;
   transform: translateY(20px);
@@ -71,6 +113,13 @@ body {
   transform: translateY(0);
 }
 
+/* TEXT */
+.stat-box p {
+  font-size: 15px;
+  opacity: 0.8;
+}
+
+/* TOOLTIP */
 .tooltip {
   opacity: 0;
   font-size: 13px;
@@ -81,57 +130,69 @@ body {
 .stat-box:hover .tooltip {
   opacity: 1;
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- 🌊 SVG wave -->
+<!-- NAVBAR -->
+<nav>
+  <h2>Ocean Project</h2>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>From Consumption to Ocean Protection</h1>
+  <p>Every choice you make impacts our ocean</p>
+</section>
+
+<!-- 🌊 WAVE -->
 <div class="wave">
 <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
   <path d="M0,0V46.29c47.79,22,103.59,29,158,17C230,47,284,10,339,6s108,22,162,36c53,14,108,20,162,7,54-13,108-44,162-49s108,16,162,30V0Z" fill="rgba(255,255,255,0.2)"></path>
 </svg>
 </div>
 
+<!-- STATS -->
 <section class="stats">
 
-<div class="stat-box">
-<i class="fas fa-trash"></i>
-<div class="counter" data-target="8"></div>
-<p>Million Tons Plastic / Year</p>
-<div class="tooltip">Plastic enters ocean yearly</div>
-</div>
+  <div class="stat-box">
+    <i class="fas fa-trash"></i>
+    <div class="counter" data-target="8"></div>
+    <p>Million Tons Plastic / Year</p>
+    <div class="tooltip">Plastic waste entering oceans every year</div>
+  </div>
 
-<div class="stat-box">
-<i class="fas fa-globe"></i>
-<div class="counter" data-target="80"></div>
-<p>% Pollution from Land</p>
-<div class="tooltip">Most pollution is land-based</div>
-</div>
+  <div class="stat-box">
+    <i class="fas fa-globe"></i>
+    <div class="counter" data-target="80"></div>
+    <p>% Pollution from Land</p>
+    <div class="tooltip">Most ocean pollution comes from land</div>
+  </div>
 
-<div class="stat-box">
-<i class="fas fa-shirt"></i>
-<div class="counter" data-target="92"></div>
-<p>Million Tons Fashion Waste</p>
-<div class="tooltip">Fast fashion waste</div>
-</div>
+  <div class="stat-box">
+    <i class="fas fa-shirt"></i>
+    <div class="counter" data-target="92"></div>
+    <p>Million Tons Fashion Waste</p>
+    <div class="tooltip">Fast fashion generates huge waste</div>
+  </div>
 
-<div class="stat-box">
-<i class="fas fa-fish"></i>
-<div class="counter" data-target="90"></div>
-<p>% Marine Life Affected</p>
-<div class="tooltip">Plastic harms marine life</div>
-</div>
+  <div class="stat-box">
+    <i class="fas fa-fish"></i>
+    <div class="counter" data-target="90"></div>
+    <p>% Marine Life Affected</p>
+    <div class="tooltip">Plastic affects marine ecosystems</div>
+  </div>
 
 </section>
 
 <script>
-// 📊 一定會動的數字動畫
+// 📊 數字動畫（保證會動）
 document.querySelectorAll(".counter").forEach(el => {
-  let target = el.dataset.target;
-  let str = target.toString();
+  let target = el.dataset.target.toString();
 
-  str.split("").forEach((num, i) => {
+  target.split("").forEach((num, i) => {
     let span = document.createElement("span");
     span.classList.add("digit");
     span.innerText = num;
