@@ -5,7 +5,7 @@
   <title>Ocean Protection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Font Awesome (icon) -->
+  <!-- ICON -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
@@ -21,7 +21,7 @@
       color: white;
     }
 
-    /* ================= NAVBAR ================= */
+    /* NAVBAR */
     nav {
       position: fixed;
       top: 0;
@@ -54,7 +54,7 @@
       color: #00eaff;
     }
 
-    /* ================= HERO ================= */
+    /* HERO */
     .hero {
       height: 100vh;
       display: flex;
@@ -91,45 +91,43 @@
       background: #00c3cc;
     }
 
-    /* ================= ICON SECTION ================= */
-    .icons {
+    /* STATS */
+    .stats {
       display: flex;
       justify-content: center;
-      gap: 50px;
-      padding: 60px 20px;
+      gap: 40px;
+      padding: 80px 20px;
       flex-wrap: wrap;
-    }
-
-    .icon-box {
       text-align: center;
     }
 
-    .icon-box i {
+    .stat-box {
+      width: 220px;
+      background: rgba(255,255,255,0.1);
+      padding: 25px;
+      border-radius: 15px;
+      transition: 0.3s;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-10px);
+      background: rgba(255,255,255,0.2);
+    }
+
+    .stat-box i {
       font-size: 40px;
-      margin-bottom: 10px;
       color: #00eaff;
-    }
-
-    /* ================= COUNTER ================= */
-    .counters {
-      display: flex;
-      justify-content: center;
-      gap: 50px;
-      padding: 60px 20px;
-      flex-wrap: wrap;
-    }
-
-    .counter-box {
-      text-align: center;
+      margin-bottom: 15px;
     }
 
     .counter {
-      font-size: 40px;
+      font-size: 42px;
       font-weight: bold;
       color: #00eaff;
+      margin-bottom: 10px;
     }
 
-    /* ================= CARDS ================= */
+    /* CARDS */
     .cards {
       display: flex;
       justify-content: center;
@@ -161,7 +159,7 @@
       cursor: pointer;
     }
 
-    /* ================= AWARENESS ================= */
+    /* MESSAGES */
     .messages {
       text-align: center;
       padding: 60px 20px;
@@ -201,50 +199,43 @@
   <section class="hero">
     <h1>From Consumption to Ocean Protection</h1>
     <p>Every choice you make impacts our ocean</p>
-    <button onclick="scrollToContent()">Find Out More</button>
+    <button onclick="scrollToStats()">Find Out More</button>
   </section>
 
-  <!-- ICON -->
-  <section class="icons">
-    <div class="icon-box">
-      <i class="fas fa-bottle-water"></i>
-      <p>Plastic Waste</p>
-    </div>
-    <div class="icon-box">
-      <i class="fas fa-cart-shopping"></i>
-      <p>Overconsumption</p>
-    </div>
-    <div class="icon-box">
-      <i class="fas fa-fish"></i>
-      <p>Marine Life</p>
-    </div>
-    <div class="icon-box">
-      <i class="fas fa-recycle"></i>
-      <p>Recycling</p>
-    </div>
-  </section>
+  <!-- STATS -->
+  <section class="stats" id="stats">
 
-  <!-- COUNTERS -->
-  <section class="counters">
-    <div class="counter-box">
+    <div class="stat-box">
+      <i class="fas fa-trash"></i>
       <div class="counter" data-target="8">0</div>
-      <p>Million Tons Plastic / Year</p>
+      <p>Million Tons of Plastic Enter Oceans Each Year</p>
     </div>
-    <div class="counter-box">
-      <div class="counter" data-target="70">0</div>
-      <p>% Pollution from Land</p>
+
+    <div class="stat-box">
+      <i class="fas fa-globe"></i>
+      <div class="counter" data-target="80">0</div>
+      <p>% of Ocean Pollution Comes from Land</p>
     </div>
-    <div class="counter-box">
+
+    <div class="stat-box">
+      <i class="fas fa-shirt"></i>
+      <div class="counter" data-target="92">0</div>
+      <p>Million Tons of Fashion Waste Each Year</p>
+    </div>
+
+    <div class="stat-box">
+      <i class="fas fa-fish"></i>
       <div class="counter" data-target="90">0</div>
-      <p>% Marine Life Affected</p>
+      <p>% of Marine Species Affected by Plastic</p>
     </div>
+
   </section>
 
   <!-- CARDS -->
   <section class="cards">
     <div class="card">
       <h3>Game</h3>
-      <p>Learn through interaction</p>
+      <p>Learn how your choices impact oceans</p>
       <button>Learn More</button>
     </div>
 
@@ -264,30 +255,45 @@
 
   <script>
     // scroll
-    function scrollToContent() {
-      window.scrollTo({
-        top: window.innerHeight,
+    function scrollToStats() {
+      document.getElementById("stats").scrollIntoView({
         behavior: "smooth"
       });
     }
 
-    // counter animation
+    // counter animation (滑到才開始)
     const counters = document.querySelectorAll('.counter');
 
-    counters.forEach(counter => {
+    const startCounter = (counter) => {
+      const target = +counter.getAttribute('data-target');
+      let count = 0;
+
       const update = () => {
-        const target = +counter.getAttribute('data-target');
-        const count = +counter.innerText;
         const increment = target / 100;
 
         if (count < target) {
-          counter.innerText = Math.ceil(count + increment);
+          count += increment;
+          counter.innerText = Math.ceil(count);
           setTimeout(update, 20);
         } else {
           counter.innerText = target;
         }
       };
+
       update();
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+
+    counters.forEach(counter => {
+      observer.observe(counter);
     });
 
     // fade-in messages
