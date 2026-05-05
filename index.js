@@ -335,4 +335,4 @@ function restartQuiz() {
   document.getElementById('quiz-body').style.display = 'block';
   renderQuestion();
 }
-readerQuestion();
+renderQuestion();
