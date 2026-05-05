@@ -2,245 +2,1077 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ocean Protection</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+<title>OceanWise — SDG 12 & 14</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+  :root {
+    --ocean-deep: #03192e;
+    --ocean-mid: #0a3d62;
+    --ocean-teal: #0e7c7b;
+    --ocean-cyan: #17c3b2;
+    --ocean-foam: #a8edea;
+    --sand: #f9e4b7;
+    --coral: #ff6b6b;
+    --coral-light: #ffa07a;
+    --white: #f0f8ff;
+    --text-light: #cde8f5;
+    --green-ok: #2ecc71;
+    --red-wrong: #e74c3c;
+  }
 
-body {
-  background: linear-gradient(to bottom, #0a2540, #1e90ff);
-  color: white;
-  overflow-x: hidden;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* NAVBAR */
-nav {
-  position: fixed;
-  width: 100%;
-  padding: 15px 40px;
-  display: flex;
-  justify-content: space-between;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(10px);
-  z-index: 10;
-}
+  html { scroll-behavior: smooth; }
 
-nav ul {
-  display: flex;
-  gap: 25px;
-  list-style: none;
-}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ocean-deep);
+    color: var(--white);
+    overflow-x: hidden;
+  }
 
-nav li {
-  cursor: pointer;
-}
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: rgba(3,25,46,0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(23,195,178,0.2);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.3rem;
+    color: var(--ocean-cyan);
+    letter-spacing: 1px;
+  }
+  .nav-logo span { color: var(--coral); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-light); text-decoration: none;
+    font-size: .9rem; font-weight: 500;
+    position: relative; transition: color .3s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 2px; background: var(--ocean-cyan);
+    transition: width .3s;
+  }
+  .nav-links a:hover { color: var(--ocean-cyan); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-burger span { width: 26px; height: 2px; background: var(--ocean-cyan); border-radius: 2px; transition: .3s; }
 
-/* HERO */
-.hero {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+  /* ── SECTIONS ── */
+  section { min-height: 100vh; padding: 80px 5% 60px; }
 
-/* 🌊 WAVE */
-.wave {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
+  /* ── HOME ── */
+  #home {
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding-top: 64px;
+  }
 
-.wave svg {
-  animation: waveMove 6s linear infinite;
-}
+  /* Wave canvas */
+  #wave-canvas {
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 100%; z-index: 0;
+  }
 
-@keyframes waveMove {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100px); }
-}
+  .home-content {
+    position: relative; z-index: 2;
+    text-align: center; max-width: 800px;
+  }
+  .sdg-badges {
+    display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;
+  }
+  .badge {
+    background: rgba(23,195,178,0.15);
+    border: 1px solid var(--ocean-cyan);
+    border-radius: 30px; padding: .35rem 1rem;
+    font-size: .75rem; font-weight: 600;
+    letter-spacing: 1px; color: var(--ocean-cyan);
+    text-transform: uppercase;
+  }
+  .badge.coral { border-color: var(--coral); color: var(--coral); background: rgba(255,107,107,0.1); }
 
-/* STATS */
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 100px;
-  padding: 120px 20px;
-  flex-wrap: wrap;
-  text-align: center;
-}
+  .home-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800; line-height: 1.05;
+    margin-bottom: 1.2rem;
+  }
+  .home-title .accent { color: var(--ocean-cyan); }
+  .home-title .accent2 { color: var(--coral); }
 
-.stat-box i {
-  font-size: 42px;
-  color: #00eaff;
-  margin-bottom: 10px;
-  animation: float 3s infinite;
-}
+  .home-sub {
+    font-size: 1.1rem; color: var(--text-light);
+    max-width: 560px; margin: 0 auto 2.2rem;
+    line-height: 1.7; font-weight: 300;
+  }
 
-@keyframes float {
-  50% { transform: translateY(-10px); }
-}
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--ocean-teal), var(--ocean-cyan));
+    color: var(--ocean-deep); padding: .85rem 2.4rem;
+    border-radius: 50px; font-weight: 700;
+    font-size: 1rem; cursor: pointer; border: none;
+    text-decoration: none;
+    box-shadow: 0 0 30px rgba(23,195,178,0.4);
+    transition: transform .2s, box-shadow .2s;
+    font-family: 'Syne', sans-serif;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(23,195,178,0.6); }
 
-.counter {
-  display: flex;
-  justify-content: center;
-  font-size: 48px;
-}
+  /* Icons row */
+  .icons-row {
+    display: flex; justify-content: center; gap: 2rem;
+    margin: 3.5rem 0 2.5rem; flex-wrap: wrap;
+  }
+  .icon-item {
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    animation: float 4s ease-in-out infinite;
+  }
+  .icon-item:nth-child(2) { animation-delay: .8s; }
+  .icon-item:nth-child(3) { animation-delay: 1.6s; }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .icon-circle {
+    width: 70px; height: 70px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    border: 2px solid rgba(23,195,178,0.4);
+    background: rgba(10,61,98,0.6);
+    backdrop-filter: blur(6px);
+  }
+  .icon-label { font-size: .78rem; color: var(--text-light); text-align: center; max-width: 80px; }
 
-.digit {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 0.4s;
-}
+  /* Counters */
+  .counters {
+    display: flex; justify-content: center; gap: 3rem;
+    flex-wrap: wrap; margin-bottom: 3rem;
+  }
+  .counter-item { text-align: center; }
+  .counter-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem; font-weight: 800; color: var(--ocean-cyan);
+    line-height: 1;
+  }
+  .counter-label { font-size: .8rem; color: var(--text-light); margin-top: .25rem; }
 
-.digit.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+  /* Cards row */
+  .cards-row {
+    display: flex; gap: 1.5rem; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 3rem; position: relative; z-index: 2;
+  }
+  .mini-card {
+    background: rgba(10,61,98,0.5);
+    border: 1px solid rgba(23,195,178,0.25);
+    border-radius: 18px; padding: 1.5rem;
+    max-width: 260px; backdrop-filter: blur(10px);
+    transition: transform .3s, border-color .3s;
+    text-align: left;
+  }
+  .mini-card:hover { transform: translateY(-6px); border-color: var(--ocean-cyan); }
+  .mini-card-icon { font-size: 2rem; margin-bottom: .6rem; }
+  .mini-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; margin-bottom: .4rem; }
+  .mini-card p { font-size: .82rem; color: var(--text-light); margin-bottom: .8rem; line-height: 1.5; }
+  .mini-card a {
+    color: var(--ocean-cyan); font-size: .82rem; font-weight: 600;
+    text-decoration: none; border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+  }
+  .mini-card a:hover { border-color: var(--ocean-cyan); }
 
-.tooltip {
-  opacity: 0;
-  font-size: 13px;
-}
+  /* Awareness messages */
+  .awareness-strip {
+    display: flex; gap: 1rem; justify-content: center;
+    flex-wrap: wrap; position: relative; z-index: 2; margin-bottom: 2rem;
+  }
+  .awareness-pill {
+    background: rgba(255,107,107,0.12);
+    border: 1px solid rgba(255,107,107,0.35);
+    border-radius: 50px; padding: .55rem 1.3rem;
+    font-size: .85rem; color: var(--coral-light);
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .awareness-pill span { font-size: 1rem; }
 
-.stat-box:hover .tooltip {
-  opacity: 1;
-}
+  /* ── ABOUT ── */
+  #about { background: linear-gradient(180deg, var(--ocean-deep) 0%, #041e35 100%); }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800; margin-bottom: 1rem;
+    position: relative; display: inline-block;
+  }
+  .section-title::after {
+    content: ''; display: block;
+    width: 60px; height: 4px;
+    background: var(--ocean-cyan);
+    border-radius: 2px; margin-top: .5rem;
+  }
 
-/* CARDS */
-.cards {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  padding: 60px;
-}
+  .problems-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin: 2.5rem 0;
+  }
+  .problem-card {
+    background: rgba(10,61,98,0.4);
+    border: 1px solid rgba(23,195,178,0.15);
+    border-radius: 16px; padding: 1.8rem;
+    transition: transform .3s, border-color .3s;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .5s, transform .5s, border-color .3s;
+  }
+  .problem-card.visible { opacity: 1; transform: translateY(0); }
+  .problem-card:hover { border-color: var(--coral); }
+  .problem-card .p-icon { font-size: 2.2rem; margin-bottom: .8rem; }
+  .problem-card h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; margin-bottom: .5rem; color: var(--coral-light); }
+  .problem-card p { font-size: .88rem; color: var(--text-light); line-height: 1.6; }
 
-.card {
-  background: rgba(255,255,255,0.1);
-  padding: 25px;
-  border-radius: 15px;
-  width: 250px;
-  text-align: center;
-  transition: 0.3s;
-}
+  /* Compare images */
+  .compare-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; margin: 3rem 0 1.2rem; font-weight: 700; }
+  .compare-wrap {
+    display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3rem;
+  }
+  .compare-card {
+    flex: 1; min-width: 260px; border-radius: 16px; overflow: hidden;
+    position: relative; border: 2px solid transparent;
+  }
+  .compare-card.clean { border-color: var(--ocean-cyan); }
+  .compare-card.dirty { border-color: var(--coral); }
+  .ocean-illustration {
+    width: 100%; height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem; position: relative; overflow: hidden;
+  }
+  .ocean-clean { background: linear-gradient(160deg, #0a3d62, #17c3b2, #a8edea); }
+  .ocean-dirty { background: linear-gradient(160deg, #1a0a0a, #5a2020, #8b4513); }
+  .compare-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: .8rem 1rem;
+    background: rgba(0,0,0,0.6); font-size: .85rem;
+    font-weight: 600; text-align: center;
+  }
+  .compare-label.c { color: var(--ocean-cyan); }
+  .compare-label.d { color: var(--coral); }
 
-.card:hover {
-  transform: translateY(-10px);
-}
+  /* Solutions */
+  .solutions-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; margin-bottom: 1.5rem; font-weight: 700; }
+  .solutions-list { display: flex; flex-direction: column; gap: 1rem; }
+  .solution-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: rgba(10,61,98,0.35);
+    border-left: 3px solid var(--ocean-cyan);
+    border-radius: 0 12px 12px 0; padding: 1.2rem;
+    opacity: 0; transform: translateX(-30px);
+    transition: opacity .5s, transform .5s;
+  }
+  .solution-item.visible { opacity: 1; transform: translateX(0); }
+  .sol-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .sol-text h4 { font-family: 'Syne', sans-serif; font-size: 1rem; margin-bottom: .3rem; color: var(--ocean-cyan); }
+  .sol-text p { font-size: .85rem; color: var(--text-light); line-height: 1.6; }
 
-/* MESSAGES */
-.messages {
-  text-align: center;
-  padding: 40px;
-}
+  /* ── GAME ── */
+  #game { background: linear-gradient(180deg, #041e35 0%, #021428 100%); }
+  .game-intro { max-width: 600px; margin-bottom: 2rem; }
+  .game-intro p { color: var(--text-light); line-height: 1.7; margin-bottom: 1rem; }
 
+  #game-area {
+    max-width: 700px; margin: 0 auto;
+    background: rgba(10,61,98,0.4);
+    border: 1px solid rgba(23,195,178,0.3);
+    border-radius: 20px; padding: 2rem;
+    min-height: 420px;
+  }
+  .game-hud {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem; padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(23,195,178,0.2);
+  }
+  .hud-item { text-align: center; }
+  .hud-val { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--ocean-cyan); }
+  .hud-label { font-size: .7rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+
+  #ocean-grid {
+    display: grid; grid-template-columns: repeat(8, 1fr);
+    gap: 6px; margin-bottom: 1.5rem;
+  }
+  .ocean-cell {
+    aspect-ratio: 1; border-radius: 8px; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: transform .15s, background .3s;
+    background: rgba(23,195,178,0.1);
+    border: 1px solid rgba(23,195,178,0.15);
+    user-select: none;
+  }
+  .ocean-cell:hover { transform: scale(1.1); }
+  .ocean-cell.trash { background: rgba(255,107,107,0.2); border-color: rgba(255,107,107,0.3); }
+  .ocean-cell.fish { background: rgba(23,195,178,0.2); }
+  .ocean-cell.click-anim { animation: clickPop .2s ease; }
+  @keyframes clickPop { 0%,100%{transform:scale(1)} 50%{transform:scale(.75)} }
+
+  .game-controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-game {
+    padding: .65rem 1.6rem; border-radius: 50px;
+    font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700;
+    cursor: pointer; transition: transform .2s, opacity .2s; border: none;
+  }
+  .btn-start { background: linear-gradient(135deg, var(--ocean-teal), var(--ocean-cyan)); color: var(--ocean-deep); }
+  .btn-stop { background: rgba(255,107,107,0.2); color: var(--coral); border: 1px solid var(--coral); }
+  .btn-game:hover { transform: translateY(-2px); }
+  .btn-game:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+  #game-msg {
+    text-align: center; font-size: 1rem; min-height: 1.5rem;
+    color: var(--ocean-cyan); font-weight: 600; margin-top: .5rem;
+  }
+
+  /* ── QUIZ ── */
+  #quiz { background: linear-gradient(180deg, #021428 0%, var(--ocean-deep) 100%); }
+
+  #quiz-container { max-width: 720px; }
+  .quiz-progress-bar {
+    width: 100%; height: 5px; background: rgba(23,195,178,0.15);
+    border-radius: 5px; margin: 1.5rem 0;
+  }
+  .quiz-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--ocean-teal), var(--ocean-cyan));
+    border-radius: 5px; transition: width .4s ease;
+  }
+
+  .quiz-q-num {
+    font-size: .8rem; color: var(--text-light); margin-bottom: .5rem;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .quiz-question {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem; font-weight: 700;
+    line-height: 1.4; margin-bottom: 1.5rem;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: .8rem; }
+  .quiz-opt {
+    background: rgba(10,61,98,0.5);
+    border: 1.5px solid rgba(23,195,178,0.2);
+    border-radius: 12px; padding: 1rem 1.3rem;
+    cursor: pointer; font-size: .95rem;
+    display: flex; align-items: center; gap: .8rem;
+    transition: border-color .25s, background .25s, transform .15s;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: var(--ocean-cyan); background: rgba(23,195,178,0.1); transform: translateX(4px); }
+  .quiz-opt .opt-letter {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(23,195,178,0.15); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700; color: var(--ocean-cyan);
+  }
+  .quiz-opt.correct { background: rgba(46,204,113,0.2); border-color: var(--green-ok); }
+  .quiz-opt.correct .opt-letter { background: var(--green-ok); color: #fff; }
+  .quiz-opt.wrong { background: rgba(231,76,60,0.2); border-color: var(--red-wrong); }
+  .quiz-opt.wrong .opt-letter { background: var(--red-wrong); color: #fff; }
+  .quiz-opt.answered { cursor: default; }
+
+  .quiz-feedback {
+    margin-top: 1rem; font-size: .88rem; min-height: 1.2rem;
+    color: var(--text-light); line-height: 1.5;
+  }
+
+  #quiz-next {
+    margin-top: 1.5rem; display: none;
+  }
+
+  /* Result screen */
+  #quiz-result {
+    display: none; text-align: center; padding: 3rem 2rem;
+  }
+  .result-emoji { font-size: 5rem; margin-bottom: 1rem; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .result-title { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: .5rem; }
+  .result-score { font-size: 3.5rem; font-weight: 800; color: var(--ocean-cyan); font-family: 'Syne', sans-serif; }
+  .result-msg { font-size: 1rem; color: var(--text-light); margin: 1rem 0 2rem; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+  #quiz-restart { background: linear-gradient(135deg, var(--ocean-teal), var(--ocean-cyan)); color: var(--ocean-deep); padding: .8rem 2rem; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; border: none; font-size: 1rem; transition: transform .2s; }
+  #quiz-restart:hover { transform: translateY(-3px); }
+
+  /* ── ABOUT US ── */
+  #aboutus { background: linear-gradient(180deg, var(--ocean-deep) 0%, #041e35 100%); }
+  .team-grid { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; justify-content: center; }
+  .team-card {
+    background: rgba(10,61,98,0.4);
+    border: 1px solid rgba(23,195,178,0.2);
+    border-radius: 18px; padding: 2rem;
+    text-align: center; width: 200px;
+    transition: transform .3s, border-color .3s;
+  }
+  .team-card:hover { transform: translateY(-8px); border-color: var(--ocean-cyan); }
+  .avatar {
+    width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-teal));
+    border: 2px solid var(--ocean-cyan);
+  }
+  .team-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; margin-bottom: .3rem; }
+  .team-card p { font-size: .78rem; color: var(--text-light); }
+  .mission-box {
+    background: rgba(23,195,178,0.08);
+    border: 1px solid rgba(23,195,178,0.2);
+    border-radius: 16px; padding: 2rem;
+    max-width: 700px; margin-top: 3rem;
+    line-height: 1.8; color: var(--text-light);
+  }
+  .mission-box strong { color: var(--ocean-cyan); font-family: 'Syne', sans-serif; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: rgba(0,0,0,0.3); text-align: center;
+    padding: 2rem; font-size: .82rem; color: var(--text-light);
+    border-top: 1px solid rgba(23,195,178,0.1);
+  }
+  footer strong { color: var(--ocean-cyan); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--ocean-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--ocean-teal); border-radius: 3px; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; width: 100%; background: rgba(3,25,46,.97); padding: 1rem; gap: 1rem; }
+    .nav-links.open { display: flex; }
+    .nav-burger { display: flex; }
+    #ocean-grid { grid-template-columns: repeat(6, 1fr); }
+  }
 </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <nav>
-  <h2>Ocean Project</h2>
-  <ul>
-    <li>Home</li>
-    <li>About</li>
-    <li>Game</li>
-    <li>Quiz</li>
-    <li>About Us</li>
+  <div class="nav-logo">Ocean<span>Wise</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#game">Game</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#aboutus">About Us</a></li>
   </ul>
+  <div class="nav-burger" id="burger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <h1>From Consumption to Ocean Protection</h1>
-  <p>Every choice you make impacts our ocean</p>
-</section>
+<!-- HOME -->
+<section id="home">
+  <canvas id="wave-canvas"></canvas>
 
-<!-- 🌊 WAVE -->
-<div class="wave">
-<svg viewBox="0 0 1200 120">
-<path d="M0,0V46.29c47.79,22,103.59,29,158,17C230,47,284,10,339,6s108,22,162,36c53,14,108,20,162,7,54-13,108-44,162-49s108,16,162,30V0Z" fill="rgba(255,255,255,0.2)">
-</path>
-</svg>
-</div>
+  <div class="home-content">
+    <div class="sdg-badges">
+      <div class="badge">SDG 12 · Responsible Consumption</div>
+      <div class="badge coral">SDG 14 · Life Below Water</div>
+    </div>
 
-<!-- STATS -->
-<section class="stats">
-
-<div class="stat-box">
-<i class="fas fa-trash"></i>
-<div class="counter" data-target="8"></div>
-<p>Million Tons Plastic / Year</p>
-<div class="tooltip">Plastic enters ocean yearly</div>
-</div>
-
-<div class="stat-box">
-<i class="fas fa-globe"></i>
-<div class="counter" data-target="80"></div>
-<p>% Pollution from Land</p>
-<div class="tooltip">Most pollution from land</div>
-</div>
-
-<div class="stat-box">
-<i class="fas fa-shirt"></i>
-<div class="counter" data-target="92"></div>
-<p>Million Tons Fashion Waste</p>
-<div class="tooltip">Fast fashion waste</div>
-</div>
-
-<div class="stat-box">
-<i class="fas fa-fish"></i>
-<div class="counter" data-target="90"></div>
-<p>% Marine Life Affected</p>
-<div class="tooltip">Marine ecosystem impact</div>
-</div>
-
-</section>
-
-<!-- CARDS -->
-<section class="cards">
-  <div class="card">
-    <h3>Game</h3>
-    <p>Learn through interaction</p>
+    <h1 class="home-title">
+      Our Oceans<br>Are <span class="accent2">Dying</span>.<br>
+      <span class="accent">Let's Change That.</span>
+    </h1>
+    <p class="home-sub">Every year, 11 million tonnes of plastic enter our oceans. Together we can turn the tide on marine pollution and unsustainable consumption.</p>
+    <a href="#about" class="btn-primary">Find Out More ↓</a>
   </div>
 
-  <div class="card">
-    <h3>Quiz</h3>
-    <p>Test your knowledge</p>
+  <div class="icons-row" style="margin-top:3rem;">
+    <div class="icon-item">
+      <div class="icon-circle">🐋</div>
+      <div class="icon-label">Marine Life</div>
+    </div>
+    <div class="icon-item">
+      <div class="icon-circle">♻️</div>
+      <div class="icon-label">Reduce Waste</div>
+    </div>
+    <div class="icon-item">
+      <div class="icon-circle">🌊</div>
+      <div class="icon-label">Clean Oceans</div>
+    </div>
+    <div class="icon-item">
+      <div class="icon-circle">🌱</div>
+      <div class="icon-label">Sustainability</div>
+    </div>
+  </div>
+
+  <div class="counters">
+    <div class="counter-item">
+      <div class="counter-num" data-target="11">0</div>
+      <div class="counter-label">Million tonnes of plastic yearly</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num" data-target="700">0</div>
+      <div class="counter-label">Species affected by marine litter</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num" data-target="50">0</div>
+      <div class="counter-label">% of coral reefs threatened</div>
+    </div>
+  </div>
+
+  <div class="cards-row">
+    <div class="mini-card">
+      <div class="mini-card-icon">🎮</div>
+      <h3>Clean the Ocean</h3>
+      <p>Play our interactive game and help clean up the virtual ocean. Learn while you play!</p>
+      <a href="#game">→ Learn More</a>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-icon">🧠</div>
+      <h3>Test Your Knowledge</h3>
+      <p>How much do you know about ocean sustainability? Take our 10-question quiz and find out.</p>
+      <a href="#quiz">→ Learn More</a>
+    </div>
+  </div>
+
+  <div class="awareness-strip">
+    <div class="awareness-pill"><span>🚫</span> Plastic bags take 500+ years to decompose</div>
+    <div class="awareness-pill"><span>🐢</span> 1M seabirds & 100K marine mammals die from ocean pollution annually</div>
+    <div class="awareness-pill"><span>🌊</span> The ocean absorbs 30% of CO₂ produced by humans</div>
   </div>
 </section>
 
-<!-- MESSAGES -->
-<section class="messages">
-  <p>Reduce plastic, save marine life</p>
-  <p>Your daily choices matter</p>
-  <p>Protect oceans, protect future</p>
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">The Crisis We Face</h2>
+  <p style="color:var(--text-light); max-width:660px; line-height:1.7; margin-bottom:1rem;">Our oceans and consumption patterns are at a tipping point. Understanding the problems is the first step toward meaningful action.</p>
+
+  <div class="problems-grid">
+    <div class="problem-card">
+      <div class="p-icon">🧴</div>
+      <h3>Plastic Pollution</h3>
+      <p>Over 8 million metric tons of plastic enter our oceans each year. Microplastics have been found in the deepest ocean trenches and in the food we eat.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">🌡️</div>
+      <h3>Ocean Warming</h3>
+      <p>The ocean has absorbed over 90% of the excess heat from global warming, causing mass coral bleaching, rising sea levels, and disruption of marine ecosystems.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">🎣</div>
+      <h3>Overfishing</h3>
+      <p>Over 34% of the world's fish stocks are fished at unsustainable levels. Destructive fishing practices destroy critical habitats like coral reefs and seagrass beds.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">🏭</div>
+      <h3>Overconsumption</h3>
+      <p>Global material consumption has tripled since 1970. Current production and consumption patterns consume far more resources than the Earth can regenerate.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">⚗️</div>
+      <h3>Chemical Pollution</h3>
+      <p>Agricultural runoff, industrial waste, and sewage pour nutrients into coastal waters, creating "dead zones" where oxygen is so low that marine life cannot survive.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">🪸</div>
+      <h3>Coral Reef Decline</h3>
+      <p>Coral reefs support 25% of all marine life yet cover less than 1% of the ocean floor. Half of shallow water coral reefs have been lost in the last 30 years.</p>
+    </div>
+  </div>
+
+  <!-- Compare section -->
+  <div class="compare-title">🌊 What We're Risking vs. What We're Losing</div>
+  <div class="compare-wrap">
+    <div class="compare-card clean">
+      <div class="ocean-illustration ocean-clean">
+        <span style="position:relative;z-index:1">🐠🐡🦈🐙🪸</span>
+      </div>
+      <div class="compare-label c">✅ A Healthy Ocean — Thriving with life, clear water, and rich biodiversity.</div>
+    </div>
+    <div class="compare-card dirty">
+      <div class="ocean-illustration ocean-dirty">
+        <span style="position:relative;z-index:1">🛍️💀🧴⚗️🚬</span>
+      </div>
+      <div class="compare-label d">❌ A Polluted Ocean — Choked with waste, toxic to marine life, and devastating to ecosystems.</div>
+    </div>
+  </div>
+
+  <!-- Solutions -->
+  <div class="solutions-title">🌱 What Can We Do?</div>
+  <div class="solutions-list" id="solutionsList">
+    <div class="solution-item">
+      <div class="sol-icon">♻️</div>
+      <div class="sol-text">
+        <h4>Reduce, Reuse, Recycle</h4>
+        <p>Cut single-use plastics from your daily life. Choose reusable bags, bottles, and containers. Support brands with sustainable packaging commitments.</p>
+      </div>
+    </div>
+    <div class="solution-item">
+      <div class="sol-icon">🛒</div>
+      <div class="sol-text">
+        <h4>Consume Responsibly</h4>
+        <p>Buy only what you need. Choose sustainably sourced seafood certified by MSC or ASC. Support circular economy businesses that design out waste.</p>
+      </div>
+    </div>
+    <div class="solution-item">
+      <div class="sol-icon">🏖️</div>
+      <div class="sol-text">
+        <h4>Participate in Clean-ups</h4>
+        <p>Join local beach or river clean-up initiatives. Even a single volunteer session removes hundreds of pieces of plastic before they reach the ocean.</p>
+      </div>
+    </div>
+    <div class="solution-item">
+      <div class="sol-icon">📢</div>
+      <div class="sol-text">
+        <h4>Advocate & Educate</h4>
+        <p>Raise awareness among family and friends. Support policies that restrict single-use plastics and strengthen marine protected area legislation.</p>
+      </div>
+    </div>
+    <div class="solution-item">
+      <div class="sol-icon">🌿</div>
+      <div class="sol-text">
+        <h4>Adopt Sustainable Habits</h4>
+        <p>Reduce food waste, compost organic material, and choose plant-rich diets. These actions reduce agricultural runoff and lower your carbon footprint.</p>
+      </div>
+    </div>
+  </div>
 </section>
+
+<!-- GAME -->
+<section id="game">
+  <h2 class="section-title">Clean the Ocean 🌊</h2>
+  <div class="game-intro">
+    <p>Help save the ocean! Click on trash items (🛍️🧴🚬💀) to remove them before the timer runs out. Leave the fish and sea creatures alone — they belong there!</p>
+    <p><strong style="color:var(--ocean-cyan)">+10 pts</strong> for removing trash &nbsp;|&nbsp; <strong style="color:var(--coral)">-5 pts</strong> for clicking a sea creature</p>
+  </div>
+
+  <div id="game-area">
+    <div class="game-hud">
+      <div class="hud-item">
+        <div class="hud-val" id="g-score">0</div>
+        <div class="hud-label">Score</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-val" id="g-timer">30</div>
+        <div class="hud-label">Seconds</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-val" id="g-cleaned">0</div>
+        <div class="hud-label">Cleaned</div>
+      </div>
+    </div>
+    <div id="ocean-grid"></div>
+    <div class="game-controls">
+      <button class="btn-game btn-start" id="startBtn" onclick="startGame()">▶ Start Game</button>
+      <button class="btn-game btn-stop" id="stopBtn" onclick="resetGame()" disabled>↺ Reset</button>
+    </div>
+    <div id="game-msg">Press Start to clean the ocean! 🌊</div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <h2 class="section-title">Test Your Knowledge 🧠</h2>
+  <div id="quiz-container">
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div id="quiz-body">
+      <div class="quiz-q-num" id="qNum">Question 1 of 10</div>
+      <div class="quiz-question" id="qText"></div>
+      <div class="quiz-options" id="qOptions"></div>
+      <div class="quiz-feedback" id="qFeedback"></div>
+      <button class="btn-primary" id="quiz-next" onclick="nextQuestion()">Next Question →</button>
+    </div>
+    <div id="quiz-result">
+      <div class="result-emoji" id="rEmoji">🌊</div>
+      <div class="result-title" id="rTitle">Well Done!</div>
+      <div class="result-score" id="rScore">8/10</div>
+      <div class="result-msg" id="rMsg"></div>
+      <button id="quiz-restart" onclick="restartQuiz()">↺ Try Again</button>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT US -->
+<section id="aboutus">
+  <h2 class="section-title">About Us</h2>
+  <p style="color:var(--text-light); max-width:600px; line-height:1.7; margin-bottom:1.5rem;">We are a group of passionate students dedicated to raising awareness about SDG 12 (Responsible Consumption & Production) and SDG 14 (Life Below Water) through education and interactive experiences.</p>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="avatar">🧑‍🎓</div>
+      <h3>Alex Chen</h3>
+      <p>Project Lead & Web Dev</p>
+    </div>
+    <div class="team-card">
+      <div class="avatar">👩‍🎓</div>
+      <h3>Maya Lin</h3>
+      <p>Research & Content</p>
+    </div>
+    <div class="team-card">
+      <div class="avatar">🧑‍💻</div>
+      <h3>Sam Park</h3>
+      <p>Design & Animation</p>
+    </div>
+    <div class="team-card">
+      <div class="avatar">👩‍🔬</div>
+      <h3>Zoe Wu</h3>
+      <p>SDG Research Lead</p>
+    </div>
+  </div>
+
+  <div class="mission-box">
+    <p><strong>Our Mission:</strong> This project was created as part of our final year coursework to explore the intersection of Sustainable Development Goals 12 and 14. We believe that <strong>education and awareness</strong> are the most powerful tools for change. Through interactive learning, we hope to inspire everyone — students, teachers, and community members — to take concrete steps toward a more sustainable future.</p>
+    <br>
+    <p>🌊 Together, we can protect our oceans and transform our consumption habits for future generations.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with 💙 for the planet &nbsp;|&nbsp; <strong>SDG 12 + SDG 14</strong> Final Project &nbsp;|&nbsp; OceanWise 2025</p>
+</footer>
 
 <script>
-document.querySelectorAll(".counter").forEach(el => {
-  let target = el.dataset.target.toString();
-  target.split("").forEach((num, i) => {
-    let span = document.createElement("span");
-    span.classList.add("digit");
-    span.innerText = num;
-    el.appendChild(span);
+/* ─── WAVE CANVAS ─── */
+const canvas = document.getElementById('wave-canvas');
+const ctx = canvas.getContext('2d');
+let ww, wh;
 
-    setTimeout(() => {
-      span.classList.add("show");
-    }, i * 200);
+function resizeCanvas() {
+  ww = canvas.width = window.innerWidth;
+  wh = canvas.height = document.getElementById('home').offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const waves = [
+  { y: 0.65, amplitude: 28, speed: 0.012, color: 'rgba(14,124,123,0.25)', offset: 0 },
+  { y: 0.72, amplitude: 22, speed: 0.018, color: 'rgba(23,195,178,0.18)', offset: 1 },
+  { y: 0.80, amplitude: 18, speed: 0.025, color: 'rgba(10,61,98,0.45)', offset: 2 },
+  { y: 0.87, amplitude: 14, speed: 0.03,  color: 'rgba(3,25,46,0.7)',    offset: 3 },
+];
+
+let wt = 0;
+function drawWaves() {
+  ctx.clearRect(0, 0, ww, wh);
+  waves.forEach(w => {
+    const baseY = wh * w.y;
+    ctx.beginPath();
+    ctx.moveTo(0, baseY);
+    for (let x = 0; x <= ww; x += 4) {
+      const y = baseY + Math.sin((x * 0.008) + wt * w.speed * 60 + w.offset) * w.amplitude;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(ww, wh); ctx.lineTo(0, wh); ctx.closePath();
+    ctx.fillStyle = w.color;
+    ctx.fill();
   });
-});
-</script>
+  wt += 0.016;
+  requestAnimationFrame(drawWaves);
+}
+drawWaves();
 
+/* ─── NAV BURGER ─── */
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+/* ─── COUNTERS ─── */
+function animateCounters() {
+  document.querySelectorAll('.counter-num').forEach(el => {
+    const target = +el.dataset.target;
+    let cur = 0;
+    const step = target / 60;
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = Math.round(cur);
+      if (cur >= target) clearInterval(t);
+    }, 20);
+  });
+}
+
+/* ─── SCROLL OBSERVER ─── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      if (e.target.id === 'home') animateCounters();
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.problem-card, .solution-item').forEach(el => observer.observe(el));
+observer.observe(document.getElementById('home'));
+// Trigger counters on load too
+setTimeout(animateCounters, 500);
+
+/* stagger solutions */
+document.querySelectorAll('.solution-item').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.12) + 's';
+});
+document.querySelectorAll('.problem-card').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+});
+
+/* ─── GAME ─── */
+const TRASH = ['🛍️','🧴','🚬','💀','🪣','⚗️','🗑️'];
+const OCEAN  = ['🐠','🐡','🦈','🐙','🪸','🐬','🦑','🐟','🦀','🐚'];
+const GRID_SIZE = 48;
+
+let gScore = 0, gCleaned = 0, gTimer = 30, gRunning = false, gInterval = null, gSpawnInterval = null;
+const cells = [];
+
+function buildGrid() {
+  const grid = document.getElementById('ocean-grid');
+  grid.innerHTML = '';
+  cells.length = 0;
+  for (let i = 0; i < GRID_SIZE; i++) {
+    const d = document.createElement('div');
+    d.className = 'ocean-cell';
+    d.dataset.i = i;
+    d.onclick = () => cellClick(i);
+    grid.appendChild(d);
+    cells.push({ el: d, type: 'empty' });
+  }
+}
+
+function setCell(i, type) {
+  const c = cells[i];
+  c.type = type;
+  if (type === 'trash') {
+    c.el.textContent = TRASH[Math.floor(Math.random() * TRASH.length)];
+    c.el.className = 'ocean-cell trash';
+  } else if (type === 'fish') {
+    c.el.textContent = OCEAN[Math.floor(Math.random() * OCEAN.length)];
+    c.el.className = 'ocean-cell fish';
+  } else {
+    c.el.textContent = '';
+    c.el.className = 'ocean-cell';
+  }
+}
+
+function spawnItems() {
+  const empty = cells.map((c, i) => c.type === 'empty' ? i : -1).filter(i => i >= 0);
+  if (empty.length === 0) return;
+  const idx = empty[Math.floor(Math.random() * empty.length)];
+  const isTrash = Math.random() < 0.45;
+  setCell(idx, isTrash ? 'trash' : 'fish');
+}
+
+function cellClick(i) {
+  if (!gRunning) return;
+  const c = cells[i];
+  c.el.classList.add('click-anim');
+  setTimeout(() => c.el.classList.remove('click-anim'), 200);
+  if (c.type === 'trash') {
+    gScore += 10; gCleaned++;
+    document.getElementById('game-msg').textContent = '✅ Great! You removed trash! +10 pts';
+    setCell(i, 'empty');
+  } else if (c.type === 'fish') {
+    gScore = Math.max(0, gScore - 5);
+    document.getElementById('game-msg').textContent = '❌ Oops! That\'s a sea creature! -5 pts';
+  }
+  document.getElementById('g-score').textContent = gScore;
+  document.getElementById('g-cleaned').textContent = gCleaned;
+}
+
+function startGame() {
+  if (gRunning) return;
+  gScore = 0; gCleaned = 0; gTimer = 30; gRunning = true;
+  buildGrid();
+  document.getElementById('g-score').textContent = 0;
+  document.getElementById('g-cleaned').textContent = 0;
+  document.getElementById('g-timer').textContent = 30;
+  document.getElementById('game-msg').textContent = '🌊 Clean up the ocean!';
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('stopBtn').disabled = false;
+
+  // initial spawn
+  for (let k = 0; k < 10; k++) spawnItems();
+
+  gSpawnInterval = setInterval(spawnItems, 1200);
+  gInterval = setInterval(() => {
+    gTimer--;
+    document.getElementById('g-timer').textContent = gTimer;
+    if (gTimer <= 0) endGame();
+  }, 1000);
+}
+
+function endGame() {
+  gRunning = false;
+  clearInterval(gInterval);
+  clearInterval(gSpawnInterval);
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = true;
+  const msg = gScore >= 100
+    ? `🏆 Amazing! You cleaned ${gCleaned} pieces and scored ${gScore} pts! Ocean hero!`
+    : gScore >= 50
+    ? `⭐ Good job! ${gCleaned} pieces cleaned. Score: ${gScore}. Keep going!`
+    : `🌱 You scored ${gScore} pts. Practice makes perfect — the ocean needs you!`;
+  document.getElementById('game-msg').textContent = msg;
+}
+
+function resetGame() {
+  gRunning = false;
+  clearInterval(gInterval);
+  clearInterval(gSpawnInterval);
+  gScore = 0; gCleaned = 0; gTimer = 30;
+  buildGrid();
+  document.getElementById('g-score').textContent = 0;
+  document.getElementById('g-cleaned').textContent = 0;
+  document.getElementById('g-timer').textContent = 30;
+  document.getElementById('game-msg').textContent = 'Press Start to clean the ocean! 🌊';
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = true;
+}
+
+buildGrid();
+
+/* ─── QUIZ ─── */
+const questions = [
+  {
+    q: "How much plastic waste enters the ocean every year?",
+    opts: ["1 million tonnes","5 million tonnes","11 million tonnes","20 million tonnes"],
+    ans: 2,
+    fact: "An estimated 11 million metric tons of plastic flow into the ocean annually — equivalent to dumping a garbage truck of plastic every minute."
+  },
+  {
+    q: "What percentage of the world's oxygen is produced by ocean phytoplankton?",
+    opts: ["10%","30%","50%","70%"],
+    ans: 2,
+    fact: "Ocean phytoplankton produces about 50% of Earth's oxygen through photosynthesis — making the ocean our planetary lungs."
+  },
+  {
+    q: "Which SDG focuses on 'Life Below Water'?",
+    opts: ["SDG 6","SDG 12","SDG 14","SDG 17"],
+    ans: 2,
+    fact: "SDG 14 calls for conservation and sustainable use of the oceans, seas, and marine resources for sustainable development."
+  },
+  {
+    q: "Approximately how long does a plastic bottle take to decompose in the ocean?",
+    opts: ["10 years","50 years","200 years","450 years"],
+    ans: 3,
+    fact: "A plastic bottle can take up to 450 years to decompose in the ocean, leaching harmful chemicals throughout its degradation."
+  },
+  {
+    q: "What does SDG 12 stand for?",
+    opts: ["Sustainable Cities","Climate Action","Responsible Consumption & Production","Clean Energy"],
+    ans: 2,
+    fact: "SDG 12 aims to ensure sustainable consumption and production patterns, reducing waste and environmental impact globally."
+  },
+  {
+    q: "What percentage of coral reefs are threatened by human activities?",
+    opts: ["10%","25%","50%","75%"],
+    ans: 2,
+    fact: "About 50% of shallow-water coral reefs have already been lost, with human activity — warming, pollution, overfishing — being the primary driver."
+  },
+  {
+    q: "Which is NOT a solution for reducing ocean plastic pollution?",
+    opts: ["Using reusable bags","Buying more fast fashion","Participating in beach clean-ups","Supporting extended producer responsibility"],
+    ans: 1,
+    fact: "Fast fashion is one of the biggest sources of microplastic pollution. Each wash of synthetic clothing releases thousands of plastic fibers into waterways."
+  },
+  {
+    q: "How much of global CO₂ emissions does the ocean absorb?",
+    opts: ["10%","20%","30%","50%"],
+    ans: 2,
+    fact: "The ocean absorbs about 30% of the CO₂ produced by humans, acting as a crucial carbon sink — but this causes ocean acidification."
+  },
+  {
+    q: "What fraction of the world's fish stocks are overfished at unsustainable levels?",
+    opts: ["1 in 10","1 in 5","1 in 3","1 in 2"],
+    ans: 2,
+    fact: "According to the FAO, over 34% (roughly 1 in 3) of the world's fish stocks are fished at biologically unsustainable levels."
+  },
+  {
+    q: "Which everyday action has the LEAST impact on ocean sustainability?",
+    opts: ["Reducing seafood consumption","Changing phone wallpaper","Refusing single-use plastics","Supporting marine protection policies"],
+    ans: 1,
+    fact: "Changing your phone wallpaper has virtually no environmental impact, while the other choices directly reduce ocean pollution and habitat destruction."
+  }
+];
+
+let qIndex = 0, qScore = 0, answered = false;
+
+function renderQuestion() {
+  const q = questions[qIndex];
+  answered = false;
+  document.getElementById('qNum').textContent = `Question ${qIndex + 1} of ${questions.length}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qFeedback').textContent = '';
+  document.getElementById('quiz-next').style.display = 'none';
+  document.getElementById('progressFill').style.width = (qIndex / questions.length * 100) + '%';
+
+  const opts = document.getElementById('qOptions');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const letters = ['A','B','C','D'];
+    const d = document.createElement('div');
+    d.className = 'quiz-opt';
+    d.innerHTML = `<div class="opt-letter">${letters[i]}</div><span>${o}</span>`;
+    d.onclick = () => selectAnswer(i, d);
+    opts.appendChild(d);
+  });
+}
+
+function selectAnswer(i, el) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const allOpts = document.querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => o.classList.add('answered'));
+
+  if (i === q.ans) {
+    el.classList.add('correct');
+    qScore++;
+    document.getElementById('qFeedback').innerHTML = `<span style="color:var(--green-ok)">✅ Correct!</span> ${q.fact}`;
+  } else {
+    el.classList.add('wrong');
+    allOpts[q.ans].classList.add('correct');
+    document.getElementById('qFeedback').innerHTML = `<span style="color:var(--red-wrong)">❌ Incorrect.</span> The correct answer is <strong>${q.opts[q.ans]}</strong>. ${q.fact}`;
+  }
+
+  const btn = document.getElementById('quiz-next');
+  btn.style.display = 'inline-block';
+  btn.textContent = qIndex < questions.length - 1 ? 'Next Question →' : 'See My Results 🏆';
+}
+
+function nextQuestion() {
+  qIndex++;
+  if (qIndex >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quiz-body').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('rScore').textContent = `${qScore} / ${questions.length}`;
+
+  if (qScore > 5) {
+    document.getElementById('rEmoji').textContent = '🏆';
+    document.getElementById('rTitle').textContent = 'Ocean Champion!';
+    document.getElementById('rMsg').textContent = `Good job for protecting the environment! 🌊 You scored ${qScore} out of 10. Your knowledge about ocean sustainability and responsible consumption can make a real difference. Keep spreading the word!`;
+    document.getElementById('rScore').style.color = 'var(--ocean-cyan)';
+  } else {
+    document.getElementById('rEmoji').textContent = '🌱';
+    document.getElementById('rTitle').textContent = 'Keep Learning!';
+    document.getElementById('rMsg').textContent = `Can make more persistent efforts! 💪 You scored ${qScore} out of 10. Every expert was once a beginner — explore our About section to learn more, then try the quiz again!`;
+    document.getElementById('rScore').style.color = 'var(--coral)';
+  }
+}
+
+function restartQuiz() {
+  qIndex = 0; qScore = 0;
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-body').style.display = 'block';
+  renderQuestion();
+}
+
+renderQuestion();
+</script>
 </body>
 </html>
