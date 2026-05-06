@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game — OceanWise</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" herf="game.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Ocean<span>Wise</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="game.html" class="active">Game</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
+    <li><a href="aboutus.html">About Us</a></li>
+  </ul>
+  <div class="nav-burger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-tag">Interactive · Ocean Clean-Up</div>
+  <h1 class="page-title">🌊 Clean the <span class="accent">Ocean</span></h1>
+  <p class="page-subtitle">Be the hero our oceans need! Remove plastic and trash before the timer runs out — but leave the sea creatures alone.</p>
+</div>
+
+<div class="content">
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <!-- How to play -->
+  <div class="how-to-play">
+    <div class="htp-title">📖 How to Play</div>
+    <div class="htp-item"><div class="htp-icon">🛍️</div><div class="htp-text"><strong>Click trash</strong> items to clean them up. Each piece removed earns <strong style="color:#17c3b2">+10 pts</strong>.</div></div>
+    <div class="htp-item"><div class="htp-icon">🐠</div><div class="htp-text"><strong>Don't click</strong> sea creatures — they belong in the ocean! Clicking one costs <strong style="color:#ff6b6b">-5 pts</strong>.</div></div>
+    <div class="htp-item"><div class="htp-icon">⏱️</div><div class="htp-text">You have <strong>30 seconds</strong>. New trash and creatures appear constantly — stay alert!</div></div>
+    <div class="htp-item"><div class="htp-icon">🏆</div><div class="htp-text">Score <strong>100+ pts</strong> to become an Ocean Hero. Can you beat your personal best?</div></div>
+  </div>
+
+  <!-- Best score display -->
+  <div class="best-score">
+    <div class="label">🏅 Personal Best</div>
+    <div class="val" id="bestDisplay">—</div>
+  </div>
+
+  <!-- Game -->
+  <div id="game-area">
+    <div class="game-hud">
+      <div class="hud-item"><div class="hud-val" id="g-score">0</div><div class="hud-label">Score</div></div>
+      <div class="hud-item timer" id="timerBox"><div class="hud-val" id="g-timer">30</div><div class="hud-label">Seconds Left</div></div>
+      <div class="hud-item"><div class="hud-val" id="g-cleaned">0</div><div class="hud-label">Cleaned</div></div>
+    </div>
+    <div id="ocean-grid"></div>
+    <div class="game-controls">
+      <button class="btn-game btn-start" id="startBtn" onclick="startGame()">▶ Start Game</button>
+      <button class="btn-game btn-reset" id="resetBtn" onclick="resetGame()" disabled>↺ Reset</button>
+    </div>
+    <div id="game-msg">Press Start to clean the ocean! 🌊</div>
+  </div>
+
+  <!-- Did you know -->
+  <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:1rem;">Did You Know? 🐢</div>
+  <div class="facts-grid">
+    <div class="fact-card"><div class="fi">🛍️</div><p>A plastic bag can take <strong>500 years</strong> to decompose in the ocean, breaking into microplastics that never fully disappear.</p></div>
+    <div class="fact-card"><div class="fi">🐢</div><p>Sea turtles often mistake plastic bags for jellyfish. Ingesting just a single piece of plastic has a <strong>22% chance of killing</strong> a sea turtle.</p></div>
+    <div class="fact-card"><div class="fi">🌀</div><p>The Great Pacific Garbage Patch is now <strong>twice the size of Texas</strong> — an accumulation of 1.8 trillion pieces of plastic.</p></div>
+    <div class="fact-card"><div class="fi">🍽️</div><p>Humans may be ingesting up to <strong>5 grams of microplastic</strong> per week — roughly the weight of a credit card.</p></div>
+  </div>
+</div>
+
+<footer>
+  <p>Made with 💙 for the planet &nbsp;|&nbsp; <strong>SDG 12 + SDG 14</strong> Final Project &nbsp;|&nbsp; OceanWise 2025</p>
+</footer>
+
+<script>
+const TRASH = ['🛍️','🧴','🚬','💀','🪣','⚗️','🗑️','🥤','🪤'];
+const OCEAN  = ['🐠','🐡','🦈','🐙','🪸','🐬','🦑','🐟','🦀','🐚','🐋','🦭'];
+const GRID   = 48;
+
+let gScore=0, gCleaned=0, gTimer=30, gRunning=false, gIntvl=null, gSpawn=null;
+const cells=[];
+let bestScore = parseInt(localStorage.getItem('ow-best')||'0');
+
+function updateBest() {
+  const el = document.getElementById('bestDisplay');
+  el.textContent = bestScore > 0 ? bestScore + ' pts' : '—';
+}
+updateBest();
+
+function buildGrid() {
+  const g = document.getElementById('ocean-grid'); g.innerHTML=''; cells.length=0;
+  for(let i=0;i<GRID;i++){
+    const d=document.createElement('div'); d.className='ocean-cell empty';
+    d.onclick=()=>cellClick(i); g.appendChild(d); cells.push({el:d,type:'empty'});
+  }
+}
+
+function setCell(i,type) {
+  const c=cells[i]; c.type=type;
+  if(type==='trash'){ c.el.textContent=TRASH[Math.floor(Math.random()*TRASH.length)]; c.el.className='ocean-cell trash'; }
+  else if(type==='fish'){ c.el.textContent=OCEAN[Math.floor(Math.random()*OCEAN.length)]; c.el.className='ocean-cell fish'; }
+  else { c.el.textContent=''; c.el.className='ocean-cell empty'; }
+}
+
+function spawnItems() {
+  const empty=cells.map((c,i)=>c.type==='empty'?i:-1).filter(i=>i>=0);
+  if(!empty.length) return;
+  const idx=empty[Math.floor(Math.random()*empty.length)];
+  setCell(idx, Math.random()<0.48?'trash':'fish');
+}
+
+function cellClick(i) {
+  if(!gRunning) return;
+  const c=cells[i]; if(c.type==='empty') return;
+  c.el.classList.add('pop'); setTimeout(()=>c.el.classList.remove('pop'),200);
+  const msg=document.getElementById('game-msg');
+  if(c.type==='trash'){ gScore+=10; gCleaned++; msg.textContent='✅ Trash removed! +10 pts'; msg.className=''; setCell(i,'empty'); }
+  else if(c.type==='fish'){ gScore=Math.max(0,gScore-5); msg.textContent='❌ That\'s a sea creature! -5 pts'; msg.className='bad'; }
+  document.getElementById('g-score').textContent=gScore;
+  document.getElementById('g-cleaned').textContent=gCleaned;
+}
+
+function startGame() {
+  if(gRunning) return;
+  gScore=0; gCleaned=0; gTimer=30; gRunning=true;
+  buildGrid();
+  ['g-score','g-cleaned'].forEach(id=>document.getElementById(id).textContent=0);
+  document.getElementById('g-timer').textContent=30;
+  document.getElementById('game-msg').textContent='🌊 Clean up the ocean!';
+  document.getElementById('game-msg').className='';
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('resetBtn').disabled=false;
+  document.getElementById('timerBox').classList.remove('urgent');
+  for(let k=0;k<10;k++) spawnItems();
+  gSpawn=setInterval(spawnItems,1100);
+  gIntvl=setInterval(()=>{
+    gTimer--; document.getElementById('g-timer').textContent=gTimer;
+    if(gTimer<=10) document.getElementById('timerBox').classList.add('urgent');
+    if(gTimer<=0) endGame();
+  },1000);
+}
+
+function endGame() {
+  gRunning=false; clearInterval(gIntvl); clearInterval(gSpawn);
+  document.getElementById('startBtn').disabled=false;
+  document.getElementById('resetBtn').disabled=true;
+  document.getElementById('timerBox').classList.remove('urgent');
+  if(gScore>bestScore){ bestScore=gScore; localStorage.setItem('ow-best',bestScore); updateBest(); }
+  const msg = gScore>=100 ? `🏆 Ocean Hero! ${gCleaned} pieces cleaned, ${gScore} pts! Amazing!`
+             : gScore>=50  ? `⭐ Great job! ${gCleaned} cleaned, ${gScore} pts! Keep it up!`
+             : `🌱 ${gScore} pts — practice makes perfect! The ocean still needs you.`;
+  document.getElementById('game-msg').textContent=msg;
+  document.getElementById('game-msg').className='';
+}
+
+function resetGame() {
+  gRunning=false; clearInterval(gIntvl); clearInterval(gSpawn);
+  gScore=0; gCleaned=0; gTimer=30;
+  buildGrid();
+  ['g-score','g-cleaned'].forEach(id=>document.getElementById(id).textContent=0);
+  document.getElementById('g-timer').textContent=30;
+  document.getElementById('game-msg').textContent='Press Start to clean the ocean! 🌊';
+  document.getElementById('game-msg').className='';
+  document.getElementById('startBtn').disabled=false;
+  document.getElementById('resetBtn').disabled=true;
+  document.getElementById('timerBox').classList.remove('urgent');
+}
+
+buildGrid();
+</script>
+</body>
+</html>
