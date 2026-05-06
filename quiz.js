@@ -1,0 +1,100 @@
+const questions = [
+  { q:"How much plastic waste enters the ocean every year?", opts:["1 million tonnes","5 million tonnes","11 million tonnes","20 million tonnes"], ans:2, fact:"An estimated 11 million metric tons of plastic flow into the ocean annually — equivalent to dumping a garbage truck of plastic every single minute." },
+  { q:"What percentage of the world's oxygen is produced by ocean phytoplankton?", opts:["10%","30%","50%","70%"], ans:2, fact:"Ocean phytoplankton produces about 50% of Earth's oxygen through photosynthesis — making healthy oceans essential to all life on land too." },
+  { q:"Which UN Sustainable Development Goal focuses on 'Life Below Water'?", opts:["SDG 6","SDG 12","SDG 14","SDG 17"], ans:2, fact:"SDG 14 calls for the conservation and sustainable use of the oceans, seas, and marine resources — protecting everything from coral reefs to deep-sea ecosystems." },
+  { q:"Approximately how long does a plastic bottle take to decompose in the ocean?", opts:["10 years","50 years","200 years","450 years"], ans:3, fact:"A plastic bottle can take up to 450 years to fully decompose, leaching harmful chemicals and breaking into microplastics throughout its degradation." },
+  { q:"What does SDG 12 stand for?", opts:["Sustainable Cities & Communities","Climate Action","Responsible Consumption & Production","Affordable & Clean Energy"], ans:2, fact:"SDG 12 aims to ensure sustainable consumption and production patterns globally — reshaping how we make, use, and dispose of everything from food to electronics." },
+  { q:"What percentage of shallow-water coral reefs have been lost in the last 30 years?", opts:["10%","25%","50%","75%"], ans:2, fact:"Around 50% of shallow-water coral reefs have been lost since the 1950s, driven by warming waters, ocean acidification, and destructive human activities." },
+  { q:"Which of the following is NOT a solution for reducing ocean plastic pollution?", opts:["Using reusable bags and bottles","Buying more fast fashion clothing","Joining beach clean-up events","Supporting plastic reduction policies"], ans:1, fact:"Fast fashion is a major source of microplastic pollution — every synthetic garment wash releases thousands of plastic fibres that flow into our waterways and oceans." },
+  { q:"How much of global CO₂ emissions does the ocean absorb?", opts:["10%","20%","30%","50%"], ans:2, fact:"The ocean absorbs about 30% of the CO₂ humans produce, acting as a vital carbon sink. The downside is ocean acidification, which harms shellfish and coral." },
+  { q:"What fraction of the world's fish stocks are being fished at unsustainable levels?", opts:["1 in 10","1 in 5","1 in 3","1 in 2"], ans:2, fact:"According to the FAO, over 34% — roughly 1 in 3 — of the world's fish stocks are exploited at biologically unsustainable levels, threatening food security for billions." },
+  { q:"Which everyday action has the LEAST direct impact on ocean health?", opts:["Reducing seafood consumption","Changing your phone wallpaper","Refusing single-use plastics","Supporting marine protection legislation"], ans:1, fact:"Changing your phone wallpaper has virtually zero environmental impact. The other actions — eating less seafood, refusing plastics, and advocating for policy — each directly reduce ocean stress." }
+];
+
+let qIndex=0, qScore=0, qWrong=0, answered=false;
+const LETTERS=['A','B','C','D'];
+
+function renderQ() {
+  const q=questions[qIndex]; answered=false;
+  document.getElementById('qNum').textContent=`Question ${qIndex+1} of ${questions.length}`;
+  document.getElementById('progressFill').style.width=(qIndex/questions.length*100)+'%';
+  document.getElementById('qText').textContent=q.q;
+
+  const fb=document.getElementById('qFeedback'); fb.textContent=''; fb.className='feedback';
+  const btn=document.getElementById('btnNext'); btn.className='btn-next';
+  btn.textContent=qIndex<questions.length-1?'Next Question →':'See My Results 🏆';
+
+  // Animate card
+  const card=document.getElementById('quizCard'); card.style.animation='none'; card.offsetHeight; card.style.animation='';
+
+  const opts=document.getElementById('qOptions'); opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const d=document.createElement('div'); d.className='opt';
+    d.innerHTML=`<div class="opt-letter">${LETTERS[i]}</div><span>${o}</span>`;
+    d.onclick=()=>selectAns(i,d);
+    opts.appendChild(d);
+  });
+}
+
+function selectAns(i, el) {
+  if(answered) return; answered=true;
+  const q=questions[qIndex];
+  document.querySelectorAll('.opt').forEach(o=>o.classList.add('answered'));
+  const fb=document.getElementById('qFeedback');
+  if(i===q.ans){
+    el.classList.add('correct'); qScore++;
+    document.getElementById('qScoreLive').textContent=`Score: ${qScore}`;
+    fb.className='feedback correct-fb show';
+    fb.innerHTML=`<strong style="color:var(--green-ok)">✅ Correct!</strong> ${q.fact}`;
+  } else {
+    el.classList.add('wrong');
+    document.querySelectorAll('.opt')[q.ans].classList.add('correct');
+    qWrong++;
+    fb.className='feedback wrong-fb show';
+    fb.innerHTML=`<strong style="color:var(--red-wrong)">❌ Not quite.</strong> The correct answer is <strong>${q.opts[q.ans]}</strong>. ${q.fact}`;
+  }
+  document.getElementById('btnNext').classList.add('show');
+}
+
+function nextQuestion() {
+  qIndex++;
+  if(qIndex>=questions.length) showResult();
+  else renderQ();
+}
+
+function showResult() {
+  document.getElementById('quiz-body').style.display='none';
+  document.getElementById('quiz-result').style.display='block';
+  document.getElementById('progressFill').style.width='100%';
+
+  const pct=Math.round((qScore/questions.length)*100);
+  document.getElementById('sbCorrect').textContent=qScore;
+  document.getElementById('sbWrong').textContent=qWrong;
+  document.getElementById('sbPct').textContent=pct+'%';
+  document.getElementById('rScore').textContent=`${qScore} / ${questions.length}`;
+
+  const card=document.getElementById('resultCard');
+  if(qScore>5){
+    document.getElementById('rEmoji').textContent='🏆';
+    document.getElementById('rTitle').textContent='Ocean Champion!';
+    document.getElementById('rMsg').textContent=`Good job for protecting the environment! 🌊 You scored ${qScore} out of 10. Your knowledge of ocean sustainability and responsible consumption can make a real difference. Keep spreading the word and inspiring others!`;
+    document.getElementById('rScore').className='r-score good';
+    card.className='result-card good';
+  } else {
+    document.getElementById('rEmoji').textContent='🌱';
+    document.getElementById('rTitle').textContent='Keep Learning!';
+    document.getElementById('rMsg').textContent=`Can make more persistent efforts! 💪 You scored ${qScore} out of 10. Every ocean champion starts somewhere — head to our About page to learn more, then come back and try again. The ocean is counting on you!`;
+    document.getElementById('rScore').className='r-score ok';
+    card.className='result-card ok';
+  }
+}
+
+function restartQuiz() {
+  qIndex=0; qScore=0; qWrong=0;
+  document.getElementById('qScoreLive').textContent='Score: 0';
+  document.getElementById('quiz-result').style.display='none';
+  document.getElementById('quiz-body').style.display='block';
+  renderQ();
+}
+
+renderQ();
